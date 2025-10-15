@@ -203,7 +203,7 @@ PlasmoidItem {
 
                     color: Kirigami.Theme.textColor
                     font: Qt.font(Object.assign({}, Kirigami.Theme.defaultFont, {weight: Font.Bold}))
-                    text: spotify && spotify.ready ? spotify.track : "Spotify"
+                    text: spotify && spotify.ready ? truncateText(spotify.track, plasmoid.configuration.maxTitleArtistLength) : "Spotify"
                 }
 
                 /* Artist name */
@@ -215,7 +215,7 @@ PlasmoidItem {
 
                     color: Kirigami.Theme.textColor
                     font: Kirigami.Theme.defaultFont
-                    text: spotify && spotify.ready ? spotify.artist : "No song playing"
+                    text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
                 }
             }
         }
@@ -225,5 +225,11 @@ PlasmoidItem {
         if (spotify.ready) {
             progressIndicator.width = Math.min(1, (spotify.getDaemonPosition() / spotify.length)) * progress.width
         }
+    }
+
+    function truncateText(text, maxLen) {
+        return text && text.length > maxLen
+            ? text.slice(0, maxLen - 3) + "..."
+            : text;
     }
 }

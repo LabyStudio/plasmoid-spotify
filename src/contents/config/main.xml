@@ -20,5 +20,14 @@
             <default>false</default>
             <description>Enable this to fetch album covers from HTTPS sources, which is more secure.</description>
         </entry>
+        <entry name="maxTitleArtistLength" type="Int">
+            <label>Max Title/Artist Length</label>
+            <description>Maximum length of the title and artist to display. Longer titles will be truncated with an
+                ellipsis.
+            </description>
+            <default>64</default>
+            <min>10</min>
+            <max>200</max>
+        </entry>
     </group>
 </kcfg>

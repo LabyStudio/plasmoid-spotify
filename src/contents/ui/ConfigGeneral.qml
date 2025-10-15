@@ -9,11 +9,13 @@ KCM.SimpleKCM {
     property bool cfg_highlightCurrentLineDefault: false
     property bool cfg_showAlbumCoverDefault: true
     property bool cfg_fetchAlbumCoverHttpsDefault: false
+    property int cfg_maxTitleArtistLengthDefault: 30
 
     property alias cfg_showLyrics: showLyrics.checked
     property alias cfg_highlightCurrentLine: highlightCurrentLine.checked
     property alias cfg_showAlbumCover: showAlbumCover.checked
     property alias cfg_fetchAlbumCoverHttps: fetchAlbumCoverHttps.checked
+    property alias cfg_maxTitleArtistLength: maxTitleArtistLength.value
 
     ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
@@ -65,6 +67,27 @@ KCM.SimpleKCM {
                 Layout.alignment: Qt.AlignLeft
                 enabled: showAlbumCover.checked
                 Layout.leftMargin: Kirigami.Units.largeSpacing
+            }
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Max title/artist length:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            SpinBox {
+                id: maxTitleArtistLength
+                from: 10
+                to: 200
+                stepSize: 1
+                value: default_maxTitleArtistLength
+                Layout.alignment: Qt.AlignLeft
+                enabled: showAlbumCover.checked
             }
         }
     }
