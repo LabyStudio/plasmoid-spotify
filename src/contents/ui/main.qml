@@ -217,6 +217,14 @@ PlasmoidItem {
                     font: Kirigami.Theme.defaultFont
                     text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
                 }
+
+                Connections {
+                    target: plasmoid.configuration
+                    function onTitleFontSizeChanged() { updateTitleFont() }
+                    function onTitleFontFamilyChanged() { updateTitleFont() }
+                    function onArtistFontSizeChanged() { updateArtistFont() }
+                    function onArtistFontFamilyChanged() { updateArtistFont() }
+                }
             }
         }
     }
@@ -231,5 +239,33 @@ PlasmoidItem {
         return text && text.length > maxLen
             ? text.slice(0, maxLen - 3) + "..."
             : text;
+    }
+
+    function updateTitleFont() {
+        let fontObject = Qt.font(title.font);
+        
+        if (plasmoid.configuration.titleFontSize > 0) {
+            fontObject.pixelSize = plasmoid.configuration.titleFontSize;
+        }
+        
+        if (plasmoid.configuration.titleFontFamily && plasmoid.configuration.titleFontFamily.length > 0) {
+            fontObject.family = plasmoid.configuration.titleFontFamily;
+        }
+        
+        title.font = fontObject;
+    }
+
+    function updateArtistFont() {
+        let fontObject = Qt.font(artist.font);
+        
+        if (plasmoid.configuration.artistFontSize > 0) {
+            fontObject.pixelSize = plasmoid.configuration.artistFontSize;
+        }
+        
+        if (plasmoid.configuration.artistFontFamily && plasmoid.configuration.artistFontFamily.length > 0) {
+            fontObject.family = plasmoid.configuration.artistFontFamily;
+        }
+        
+        artist.font = fontObject;
     }
 }

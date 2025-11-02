@@ -18,9 +18,6 @@ Text {
     font: Kirigami.Theme.defaultFont
     lineHeight: 0.8
 
-    onWidthChanged: updateTargetPosition(false)
-    onHeightChanged: updateTargetPosition(false)
-
     property var lyrics: null
     property var spotify: null
     property var transitionDuration: 1000
@@ -33,6 +30,18 @@ Text {
             updateText();
         }
         updateTargetPosition(false)
+    }
+
+    Connections {
+        target: plasmoid.configuration
+        function onLyricsFontSizeChanged() {
+            updateFontProperties()
+            updateTargetPosition(false)
+        }
+        function onLyricsFontFamilyChanged() {
+            updateFontProperties()
+            updateTargetPosition(false)
+        }
     }
 
     Timer {
@@ -135,6 +144,22 @@ Text {
             offsetY = lineHeight * (currentLineIndex + 1);
         }
         return textElement.parent.height / 2 - offsetY + lineHeight / 2 - 3;
+    }
+
+    function updateFontProperties() {
+        let fontObject = Qt.font(textElement.font);
+        
+        // Apply font size if set
+        if (plasmoid.configuration.lyricsFontSize > 0) {
+            fontObject.pixelSize = plasmoid.configuration.lyricsFontSize;
+        }
+        
+        // Apply font family if set
+        if (plasmoid.configuration.lyricsFontFamily && plasmoid.configuration.lyricsFontFamily.length > 0) {
+            fontObject.family = plasmoid.configuration.lyricsFontFamily;
+        }
+        
+        textElement.font = fontObject;
     }
 
 }

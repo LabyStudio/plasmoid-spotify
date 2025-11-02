@@ -16,6 +16,18 @@ KCM.SimpleKCM {
     property alias cfg_showAlbumCover: showAlbumCover.checked
     property alias cfg_fetchAlbumCoverHttps: fetchAlbumCoverHttps.checked
     property alias cfg_maxTitleArtistLength: maxTitleArtistLength.value
+    
+    // Lyrics font properties
+    property alias cfg_lyricsFontSize: lyricsFontSize.value
+    property alias cfg_lyricsFontFamily: lyricsFontFamily.currentText
+    
+    // Title font properties
+    property alias cfg_titleFontSize: titleFontSize.value
+    property alias cfg_titleFontFamily: titleFontFamily.currentText
+    
+    // Artist font properties
+    property alias cfg_artistFontSize: artistFontSize.value
+    property alias cfg_artistFontFamily: artistFontFamily.currentText
 
     ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
@@ -88,6 +100,141 @@ KCM.SimpleKCM {
                 value: default_maxTitleArtistLength
                 Layout.alignment: Qt.AlignLeft
                 enabled: showAlbumCover.checked
+            }
+        }
+
+        // Lyrics Font Settings
+        Kirigami.Heading {
+            text: "Lyrics Font"
+            level: 3
+            Layout.alignment: Qt.AlignLeft
+            Layout.topMargin: Kirigami.Units.largeSpacing
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Font size (-1 = default):"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            SpinBox {
+                id: lyricsFontSize
+                from: -1
+                to: 72
+                stepSize: 1
+                value: -1
+                Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Font family:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            ComboBox {
+                id: lyricsFontFamily
+                model: Qt.fontFamilies()
+                editable: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        // Title Font Settings
+        Kirigami.Heading {
+            text: "Title Font"
+            level: 3
+            Layout.alignment: Qt.AlignLeft
+            Layout.topMargin: Kirigami.Units.largeSpacing
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Font size (-1 = default):"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            SpinBox {
+                id: titleFontSize
+                from: -1
+                to: 72
+                stepSize: 1
+                value: -1
+                Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Font family:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            ComboBox {
+                id: titleFontFamily
+                model: Qt.fontFamilies()
+                editable: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        // Artist Font Settings
+        Kirigami.Heading {
+            text: "Artist Font"
+            level: 3
+            Layout.alignment: Qt.AlignLeft
+            Layout.topMargin: Kirigami.Units.largeSpacing
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Font size (-1 = default):"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            SpinBox {
+                id: artistFontSize
+                from: -1
+                to: 72
+                stepSize: 1
+                value: -1
+                Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Font family:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            ComboBox {
+                id: artistFontFamily
+                model: Qt.fontFamilies()
+                editable: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft
             }
         }
     }

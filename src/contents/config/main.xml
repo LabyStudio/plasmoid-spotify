@@ -29,5 +29,35 @@
             <min>10</min>
             <max>200</max>
         </entry>
+        <entry name="lyricsFontSize" type="Int">
+            <label>Lyrics Font Size</label>
+            <default>-1</default>
+            <min>8</min>
+            <max>72</max>
+        </entry>
+        <entry name="lyricsFontFamily" type="String">
+            <label>Lyrics Font Family</label>
+            <default></default>
+        </entry>
+        <entry name="titleFontSize" type="Int">
+            <label>Title Font Size</label>
+            <default>-1</default>
+            <min>8</min>
+            <max>72</max>
+        </entry>
+        <entry name="titleFontFamily" type="String">
+            <label>Title Font Family</label>
+            <default></default>
+        </entry>
+        <entry name="artistFontSize" type="Int">
+            <label>Artist Font Size</label>
+            <default>-1</default>
+            <min>8</min>
+            <max>72</max>
+        </entry>
+        <entry name="artistFontFamily" type="String">
+            <label>Artist Font Family</label>
+            <default></default>
+        </entry>
     </group>
 </kcfg>
