@@ -204,6 +204,8 @@ PlasmoidItem {
                     color: Kirigami.Theme.textColor
                     font: Qt.font(Object.assign({}, Kirigami.Theme.defaultFont, {weight: Font.Bold}))
                     text: spotify && spotify.ready ? truncateText(spotify.track, plasmoid.configuration.maxTitleArtistLength) : "Spotify"
+                    
+                    Component.onCompleted: updateTitleFont()
                 }
 
                 /* Artist name */
@@ -216,6 +218,8 @@ PlasmoidItem {
                     color: Kirigami.Theme.textColor
                     font: Kirigami.Theme.defaultFont
                     text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
+                    
+                    Component.onCompleted: updateArtistFont()
                 }
 
                 Connections {
@@ -244,10 +248,12 @@ PlasmoidItem {
     function updateTitleFont() {
         let fontObject = Qt.font(title.font);
         
+        // Apply font size if set
         if (plasmoid.configuration.titleFontSize > 0) {
             fontObject.pixelSize = plasmoid.configuration.titleFontSize;
         }
         
+        // Apply font family if set
         if (plasmoid.configuration.titleFontFamily && plasmoid.configuration.titleFontFamily.length > 0) {
             fontObject.family = plasmoid.configuration.titleFontFamily;
         }
@@ -258,10 +264,12 @@ PlasmoidItem {
     function updateArtistFont() {
         let fontObject = Qt.font(artist.font);
         
+        // Apply font size if set
         if (plasmoid.configuration.artistFontSize > 0) {
             fontObject.pixelSize = plasmoid.configuration.artistFontSize;
         }
         
+        // Apply font family if set
         if (plasmoid.configuration.artistFontFamily && plasmoid.configuration.artistFontFamily.length > 0) {
             fontObject.family = plasmoid.configuration.artistFontFamily;
         }

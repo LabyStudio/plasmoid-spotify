@@ -15,7 +15,7 @@ Text {
 
     text: "Lyrics"
     color: Kirigami.Theme.textColor
-    font: Kirigami.Theme.defaultFont
+    Component.onCompleted: updateFontProperties()
     lineHeight: 0.8
 
     property var lyrics: null
