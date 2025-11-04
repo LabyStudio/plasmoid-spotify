@@ -48,6 +48,14 @@ QtObject {
         timeLastPositionChanged = new Date().getTime()
     }
 
+    onTrackChanged: {
+        timeLastPositionChanged = new Date().getTime()
+    }
+
+    onPlayingChanged: {
+        timeLastPositionChanged = new Date().getTime()
+    }
+
     function raise() {
         if (ready) {
             player.Raise()

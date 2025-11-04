@@ -15,8 +15,10 @@ Text {
 
     text: "Lyrics"
     color: Kirigami.Theme.textColor
-    Component.onCompleted: updateFontProperties()
-    lineHeight: 0.8
+    font.pixelSize: plasmoid.configuration.lyricsFontSize
+    font.family: plasmoid.configuration.lyricsFontFamily
+    lineHeightMode: Text.FixedHeight
+    lineHeight: font.pixelSize + font.pixelSize * 0.2
 
     property var lyrics: null
     property var spotify: null
@@ -30,18 +32,6 @@ Text {
             updateText();
         }
         updateTargetPosition(false)
-    }
-
-    Connections {
-        target: plasmoid.configuration
-        function onLyricsFontSizeChanged() {
-            updateFontProperties()
-            updateTargetPosition(false)
-        }
-        function onLyricsFontFamilyChanged() {
-            updateFontProperties()
-            updateTargetPosition(false)
-        }
     }
 
     Timer {
@@ -102,6 +92,8 @@ Text {
                 animation.stop()
                 y = calculateTargetY()
             }
+        } else {
+            y = textElement.parent.height / 2 - textElement.lineHeight / 2;
         }
     }
 
@@ -138,28 +130,26 @@ Text {
 
     function calculateTargetY() {
         let currentLineIndex = getCurrentLineIndex(transitionDuration / 1000 / 2);
-        let offsetY = 0;
-        let lineHeight = (textElement.contentHeight - 3) / textElement.lineCount;
-        if (lyrics !== null && currentLineIndex >= 0) {
-            offsetY = lineHeight * (currentLineIndex + 1);
+        if (!(currentLineIndex >= 0 && lineCount > 0)) {
+            return textElement.parent.height / 2 - textElement.lineHeight / 2;
         }
-        return textElement.parent.height / 2 - offsetY + lineHeight / 2 - 3;
-    }
 
-    function updateFontProperties() {
-        let fontObject = Qt.font(textElement.font);
-        
-        // Apply font size if set
-        if (plasmoid.configuration.lyricsFontSize > 0) {
-            fontObject.pixelSize = plasmoid.configuration.lyricsFontSize;
+        // Fix for - Lyrics scroll too fast #2
+        if (plasmoid.configuration.alternativeLineHeightCalculation) {
+            let offsetY = 0;
+            let lineHeight = (textElement.contentHeight - 3) / textElement.lineCount;
+            if (lyrics !== null && currentLineIndex >= 0) {
+                offsetY = lineHeight * (currentLineIndex + 1);
+            }
+            return textElement.parent.height / 2 - offsetY + lineHeight / 2 - 3;
         }
-        
-        // Apply font family if set
-        if (plasmoid.configuration.lyricsFontFamily && plasmoid.configuration.lyricsFontFamily.length > 0) {
-            fontObject.family = plasmoid.configuration.lyricsFontFamily;
-        }
-        
-        textElement.font = fontObject;
+
+        let lineHeight = textElement.lineHeight;
+        let visibleLines = Math.floor(textElement.height / lineHeight);
+        let targetLineInView = Math.floor(visibleLines / 2);
+
+        let targetLineIndex = currentLineIndex - targetLineInView;
+        return -targetLineIndex * lineHeight;
     }
 
 }

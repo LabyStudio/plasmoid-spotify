@@ -198,36 +198,33 @@ PlasmoidItem {
                 Text {
                     id: title
                     wrapMode: Text.NoWrap
+                    lineHeightMode: Text.FixedHeight
                     Layout.fillWidth: true
                     Layout.rightMargin: 20
 
                     color: Kirigami.Theme.textColor
-                    font: Qt.font(Object.assign({}, Kirigami.Theme.defaultFont, {weight: Font.Bold}))
+                    font.pixelSize: plasmoid.configuration.titleFontSize
+                    font.family: plasmoid.configuration.titleFontFamily
+                    font.weight: Font.Bold
                     text: spotify && spotify.ready ? truncateText(spotify.track, plasmoid.configuration.maxTitleArtistLength) : "Spotify"
-                    
-                    Component.onCompleted: updateTitleFont()
+
+                    Layout.preferredHeight: title.font.pixelSize + 4
                 }
 
                 /* Artist name */
                 Text {
                     id: artist
                     wrapMode: Text.NoWrap
+                    lineHeightMode: Text.FixedHeight
                     Layout.fillWidth: true
                     Layout.rightMargin: 20
 
                     color: Kirigami.Theme.textColor
-                    font: Kirigami.Theme.defaultFont
+                    font.pixelSize: plasmoid.configuration.artistFontSize
+                    font.family: plasmoid.configuration.artistFontFamily
                     text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
-                    
-                    Component.onCompleted: updateArtistFont()
-                }
 
-                Connections {
-                    target: plasmoid.configuration
-                    function onTitleFontSizeChanged() { updateTitleFont() }
-                    function onTitleFontFamilyChanged() { updateTitleFont() }
-                    function onArtistFontSizeChanged() { updateArtistFont() }
-                    function onArtistFontFamilyChanged() { updateArtistFont() }
+                    Layout.preferredHeight: artist.font.pixelSize + 4
                 }
             }
         }
@@ -243,37 +240,5 @@ PlasmoidItem {
         return text && text.length > maxLen
             ? text.slice(0, maxLen - 3) + "..."
             : text;
-    }
-
-    function updateTitleFont() {
-        let fontObject = Qt.font(title.font);
-        
-        // Apply font size if set
-        if (plasmoid.configuration.titleFontSize > 0) {
-            fontObject.pixelSize = plasmoid.configuration.titleFontSize;
-        }
-        
-        // Apply font family if set
-        if (plasmoid.configuration.titleFontFamily && plasmoid.configuration.titleFontFamily.length > 0) {
-            fontObject.family = plasmoid.configuration.titleFontFamily;
-        }
-        
-        title.font = fontObject;
-    }
-
-    function updateArtistFont() {
-        let fontObject = Qt.font(artist.font);
-        
-        // Apply font size if set
-        if (plasmoid.configuration.artistFontSize > 0) {
-            fontObject.pixelSize = plasmoid.configuration.artistFontSize;
-        }
-        
-        // Apply font family if set
-        if (plasmoid.configuration.artistFontFamily && plasmoid.configuration.artistFontFamily.length > 0) {
-            fontObject.family = plasmoid.configuration.artistFontFamily;
-        }
-        
-        artist.font = fontObject;
     }
 }
