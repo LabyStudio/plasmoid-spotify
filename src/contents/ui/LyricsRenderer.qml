@@ -15,11 +15,10 @@ Text {
 
     text: "Lyrics"
     color: Kirigami.Theme.textColor
-    font: Kirigami.Theme.defaultFont
-    lineHeight: 0.8
-
-    onWidthChanged: updateTargetPosition(false)
-    onHeightChanged: updateTargetPosition(false)
+    font.pixelSize: plasmoid.configuration.lyricsFontSize
+    font.family: plasmoid.configuration.lyricsFontFamily
+    lineHeightMode: Text.FixedHeight
+    lineHeight: font.pixelSize + font.pixelSize * 0.2
 
     property var lyrics: null
     property var spotify: null
@@ -93,6 +92,8 @@ Text {
                 animation.stop()
                 y = calculateTargetY()
             }
+        } else {
+            y = textElement.parent.height / 2 - textElement.lineHeight / 2;
         }
     }
 
@@ -129,12 +130,26 @@ Text {
 
     function calculateTargetY() {
         let currentLineIndex = getCurrentLineIndex(transitionDuration / 1000 / 2);
-        let offsetY = 0;
-        let lineHeight = (textElement.contentHeight - 3) / textElement.lineCount;
-        if (lyrics !== null && currentLineIndex >= 0) {
-            offsetY = lineHeight * (currentLineIndex + 1);
+        if (!(currentLineIndex >= 0 && lineCount > 0)) {
+            return textElement.parent.height / 2 - textElement.lineHeight / 2;
         }
-        return textElement.parent.height / 2 - offsetY + lineHeight / 2 - 3;
+
+        // Fix for - Lyrics scroll too fast #2
+        if (plasmoid.configuration.alternativeLineHeightCalculation) {
+            let offsetY = 0;
+            let lineHeight = (textElement.contentHeight - 3) / textElement.lineCount;
+            if (lyrics !== null && currentLineIndex >= 0) {
+                offsetY = lineHeight * (currentLineIndex + 1);
+            }
+            return textElement.parent.height / 2 - offsetY + lineHeight / 2 - 3;
+        }
+
+        let lineHeight = textElement.lineHeight;
+        let visibleLines = Math.floor(textElement.height / lineHeight);
+        let targetLineInView = Math.floor(visibleLines / 2);
+
+        let targetLineIndex = currentLineIndex - targetLineInView;
+        return -targetLineIndex * lineHeight;
     }
 
 }

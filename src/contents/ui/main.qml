@@ -198,24 +198,33 @@ PlasmoidItem {
                 Text {
                     id: title
                     wrapMode: Text.NoWrap
+                    lineHeightMode: Text.FixedHeight
                     Layout.fillWidth: true
                     Layout.rightMargin: 20
 
                     color: Kirigami.Theme.textColor
-                    font: Qt.font(Object.assign({}, Kirigami.Theme.defaultFont, {weight: Font.Bold}))
+                    font.pixelSize: plasmoid.configuration.titleFontSize
+                    font.family: plasmoid.configuration.titleFontFamily
+                    font.weight: Font.Bold
                     text: spotify && spotify.ready ? truncateText(spotify.track, plasmoid.configuration.maxTitleArtistLength) : "Spotify"
+
+                    Layout.preferredHeight: title.font.pixelSize + 4
                 }
 
                 /* Artist name */
                 Text {
                     id: artist
                     wrapMode: Text.NoWrap
+                    lineHeightMode: Text.FixedHeight
                     Layout.fillWidth: true
                     Layout.rightMargin: 20
 
                     color: Kirigami.Theme.textColor
-                    font: Kirigami.Theme.defaultFont
+                    font.pixelSize: plasmoid.configuration.artistFontSize
+                    font.family: plasmoid.configuration.artistFontFamily
                     text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
+
+                    Layout.preferredHeight: artist.font.pixelSize + 4
                 }
             }
         }

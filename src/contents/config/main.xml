@@ -11,6 +11,20 @@
             <label>Highlight current line</label>
             <default>true</default>
         </entry>
+        <entry name="alternativeLineHeightCalculation" type="Bool">
+            <label>Use alternative line height calculation</label>
+            <default>false</default>
+        </entry>
+        <entry name="lyricsFontSize" type="Int">
+            <label>Lyrics Font Size</label>
+            <default>12</default>
+            <min>8</min>
+            <max>72</max>
+        </entry>
+        <entry name="lyricsFontFamily" type="String">
+            <label>Lyrics Font Family</label>
+            <default>Noto Sans</default>
+        </entry>
         <entry name="showAlbumCover" type="Bool">
             <label>Show album cover</label>
             <default>true</default>
@@ -28,6 +42,26 @@
             <default>64</default>
             <min>10</min>
             <max>200</max>
+        </entry>
+        <entry name="titleFontSize" type="Int">
+            <label>Title Font Size</label>
+            <default>14</default>
+            <min>8</min>
+            <max>72</max>
+        </entry>
+        <entry name="titleFontFamily" type="String">
+            <label>Title Font Family</label>
+            <default>Noto Sans</default>
+        </entry>
+        <entry name="artistFontSize" type="Int">
+            <label>Artist Font Size</label>
+            <default>12</default>
+            <min>8</min>
+            <max>72</max>
+        </entry>
+        <entry name="artistFontFamily" type="String">
+            <label>Artist Font Family</label>
+            <default>Noto Sans</default>
         </entry>
     </group>
 </kcfg>
