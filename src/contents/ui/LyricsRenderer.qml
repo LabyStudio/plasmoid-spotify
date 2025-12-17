@@ -10,7 +10,8 @@ Text {
     Layout.rightMargin: 15
     Layout.leftMargin: 15
     wrapMode: Text.NoWrap
-    horizontalAlignment: Text.AlignRight
+    horizontalAlignment: centeredLyrics ? Text.AlignHCenter : Text.AlignRight
+    Layout.alignment: centeredLyrics ? Qt.AlignHCenter | Qt.AlignVCenter : Qt.AlignLeft
     textFormat: Text.RichText
 
     text: "Lyrics"
@@ -26,6 +27,7 @@ Text {
     property var lineCount: 0
     property var renderedLineIndex: -1
     property var renderedHighlighted: false
+    property bool centeredLyrics: false
 
     onLyricsChanged: {
         if (!plasmoid.configuration.highlightCurrentLine) {

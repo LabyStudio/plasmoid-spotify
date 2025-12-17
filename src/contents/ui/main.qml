@@ -102,8 +102,10 @@ PlasmoidItem {
             lyrics: null
             spotify: spotify
             visible: plasmoid.configuration.showLyrics && spotify && spotify.ready && lyrics && lyrics.length > 0
-
             Layout.fillWidth: true
+            centeredLyrics: !plasmoid.configuration.showAlbumCover
+                && !plasmoid.configuration.showTitle
+                && !plasmoid.configuration.showArtist
         }
 
         /* Album artwork */
@@ -188,6 +190,7 @@ PlasmoidItem {
             Layout.preferredWidth: column.implicitWidth
             Layout.preferredHeight: column.implicitHeight
             Layout.fillWidth: true
+            visible: plasmoid.configuration.showTitle || plasmoid.configuration.showArtist
 
             ColumnLayout {
                 id: column
@@ -209,6 +212,7 @@ PlasmoidItem {
                     text: spotify && spotify.ready ? truncateText(spotify.track, plasmoid.configuration.maxTitleArtistLength) : "Spotify"
 
                     Layout.preferredHeight: title.font.pixelSize + 4
+                    visible: plasmoid.configuration.showTitle
                 }
 
                 /* Artist name */
@@ -225,6 +229,7 @@ PlasmoidItem {
                     text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
 
                     Layout.preferredHeight: artist.font.pixelSize + 4
+                    visible: plasmoid.configuration.showArtist
                 }
             }
         }

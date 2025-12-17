@@ -14,8 +14,10 @@ KCM.SimpleKCM {
     property bool cfg_showAlbumCoverDefault
     property bool cfg_fetchAlbumCoverHttpsDefault
     property int cfg_maxTitleArtistLengthDefault
+    property bool cfg_showTitleDefault
     property int cfg_titleFontSizeDefault
     property string cfg_titleFontFamilyDefault
+    property bool cfg_showArtistDefault
     property int cfg_artistFontSizeDefault
     property string cfg_artistFontFamilyDefault
 
@@ -28,8 +30,10 @@ KCM.SimpleKCM {
     property alias cfg_showAlbumCover: showAlbumCover.checked
     property alias cfg_fetchAlbumCoverHttps: fetchAlbumCoverHttps.checked
     property alias cfg_maxTitleArtistLength: maxTitleArtistLength.value
+    property alias cfg_showTitle: showTitle.checked
     property alias cfg_titleFontSize: titleFontSize.value
     property alias cfg_titleFontFamily: titleFontFamily.currentText
+    property alias cfg_showArtist: showArtist.checked
     property alias cfg_artistFontSize: artistFontSize.value
     property alias cfg_artistFontFamily: artistFontFamily.currentText
 
@@ -154,6 +158,15 @@ KCM.SimpleKCM {
             }
         }
 
+        CheckBox {
+            id: showTitle
+            text: "Show title"
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            checked: plasmoid.configuration.showTitle
+            onCheckedChanged: plasmoid.configuration.showTitle = checked
+        }
+
         RowLayout {
             Layout.alignment: Qt.AlignLeft
             spacing: Kirigami.Units.smallSpacing
@@ -183,6 +196,15 @@ KCM.SimpleKCM {
                 stepSize: 1
                 Layout.alignment: Qt.AlignLeft
             }
+        }
+
+        CheckBox {
+            id: showArtist
+            text: "Show artist"
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            checked: plasmoid.configuration.showArtist
+            onCheckedChanged: plasmoid.configuration.showArtist = checked
         }
 
         RowLayout {
