@@ -23,6 +23,11 @@ PlasmoidItem {
     /* Spotify player */
     Spotify {
         id: spotify
+    }
+
+    /* Signal handlers */
+    Connections {
+        target: spotify
 
         onReadyChanged: {
             Plasmoid.status = spotify.ready ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
@@ -34,24 +39,10 @@ PlasmoidItem {
             }
         }
 
-        onArtworkUrlChanged: {
-            if (spotify.ready) {
-                let url = spotify.artworkUrl;
-                if (url && url.startsWith("https://") && !plasmoid.configuration.fetchAlbumCoverHttps) {
-                    url = url.replace("https://", "http://");
-                }
-                artwork.source = url || artwork.fallbackSource;
-            }
-        }
-
-        onTrackChanged: {
-            if (spotify.ready) {
-                lyricsRenderer.lyrics = null;
-                lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album).then(lyrics => {
-                    lyricsRenderer.lyrics = lyrics;
-                })
-            }
-        }
+        onArtworkUrlChanged: updateArtwork()
+        onTrackChanged: Qt.callLater(updateLyrics)
+        onArtistChanged: Qt.callLater(updateLyrics)
+        onAlbumChanged: Qt.callLater(updateLyrics)
     }
 
     /* Progress bar updater */
@@ -250,5 +241,26 @@ PlasmoidItem {
         return text && text.length > maxLen
             ? text.slice(0, maxLen - 3) + "..."
             : text;
+    }
+
+    /* Artwork update handler */
+    function updateArtwork() {
+        if (spotify.ready) {
+            let url = spotify.artworkUrl;
+            if (url && url.startsWith("https://") && !plasmoid.configuration.fetchAlbumCoverHttps) {
+                url = url.replace("https://", "http://");
+            }
+            artwork.source = url || artwork.fallbackSource;
+        }
+    }
+
+    /* Lyrics update handler */
+    function updateLyrics() {
+        if (spotify.ready) {
+            lyricsRenderer.lyrics = null;
+            lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album).then(lyrics => {
+                lyricsRenderer.lyrics = lyrics;
+            });
+        }
     }
 }
