@@ -17,11 +17,21 @@ Item {
         return search(trackName, artistName, albumName)
             .then(data => {
             if (data.length <= 0) {
+                console.debug("No results found for", trackName, artistName, albumName);
                 return null;
             }
 
-            let text = data[0].syncedLyrics;
+            let text = null;
+            for (let i = 0; i < data.length; i++) {
+                if (!data[i].syncedLyrics) {
+                    continue;
+                }
+                text = data[i].syncedLyrics;
+                break;
+            }
+
             if (!text) {
+                console.debug("No synced lyrics found in any result");
                 return null;
             }
 
@@ -32,27 +42,30 @@ Item {
     function search(trackName, artistName, albumName) {
         return searchByTrack(trackName, artistName, albumName)
             .then(data => {
-                if (data.length > 0) {
-                    return data;
+            if (data.length > 0) {
+                return data;
+            }
+            return searchByString(trackName + " " + artistName)
+                .then(data2 => {
+                if (data2.length > 0) {
+                    return data2;
                 }
-                return searchByString(trackName + " " + artistName)
-                    .then(data2 => {
-                        if (data2.length > 0) {
-                            return data2;
-                        }
-                        return searchByString(trackName)
-                            .then(data3 => {
-                                if (data3.length > 0) {
-                                    // Remove all entries with wrong artist
-                                    data3 = data3.filter(item => {
-                                        return item.artistName.toLowerCase() === artistName.toLowerCase();
-                                    });
-                                    return data3;
-                                }
-                                return [];
-                            });
-                    });
+                return searchByString(trackName)
+                    .then(data3 => {
+                    if (data3.length > 0) {
+                        // Remove all entries with wrong artist
+                        data3 = data3.filter(item => {
+                            return item.artistName.toLowerCase() === artistName.toLowerCase();
+                        });
+                        return data3;
+                    }
+                    return [];
+                });
             });
+        }).catch(error => {
+            console.error("Search failed:", error);
+            return [];
+        });
     }
 
     function searchByTrack(trackName, artistName, albumName) {
