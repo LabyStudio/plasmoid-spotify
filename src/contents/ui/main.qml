@@ -41,7 +41,11 @@ PlasmoidItem {
                     url = url.replace("https://", "http://");
                 }
                 artwork.source = url || artwork.fallbackSource;
+            }
+        }
 
+        onTrackChanged: {
+            if (spotify.ready) {
                 lyricsRenderer.lyrics = null;
                 lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album).then(lyrics => {
                     lyricsRenderer.lyrics = lyrics;
