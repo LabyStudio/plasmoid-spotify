@@ -17,11 +17,19 @@ Item {
         return search(trackName, artistName, albumName)
             .then(data => {
             if (data.length <= 0) {
+                console.log("[Spotify Lyrics] no results found for", trackName, artistName, albumName);
                 return null;
             }
 
-            let text = data[0].syncedLyrics;
-            if (!text) {
+            // let text = data[0].syncedLyrics; // Deprecated: prefer synced lyrics if available
+
+            let text = null;
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].syncedLyrics) {
+                    text = data[i].syncedLyrics;
+                    break;
+                }
+                console.log("[Spotify Lyrics] no synced lyrics for", data[i].trackName, data[i].artistName);
                 return null;
             }
 
@@ -52,6 +60,10 @@ Item {
                                 return [];
                             });
                     });
+            })
+            .catch(error => {
+                console.error("[Spotify Lyrics LRC Lib] Search failed:", error);
+                return [];
             });
     }
 

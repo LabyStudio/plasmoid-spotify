@@ -118,6 +118,7 @@ PlasmoidItem {
             Layout.fillWidth: false
             fillMode: Image.PreserveAspectFit
 
+
             property string fallbackSource: "../assets/icon.svg"
             property string lastAttemptedSource: ""
 
@@ -126,7 +127,7 @@ PlasmoidItem {
 
             Timer {
                 id: fallbackTimer
-                interval: 1000
+                interval: 5000
                 repeat: false
                 onTriggered: {
                     console.warn("Failed to load artwork from", artwork.lastAttemptedSource)
