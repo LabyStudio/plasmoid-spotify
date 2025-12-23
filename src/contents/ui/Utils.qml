@@ -10,7 +10,7 @@ Item {
         xhr.open("GET", url, true);
         xhr.send();
 
-        console.log("Fetching " + url);
+        console.debug("Fetching " + url);
 
         return new Promise((resolve, reject) => {
             xhr.onreadystatechange = () => {
