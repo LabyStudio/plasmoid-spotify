@@ -256,11 +256,18 @@ PlasmoidItem {
 
     /* Lyrics update handler */
     function updateLyrics() {
-        if (spotify.ready) {
+        if (spotify && spotify.ready) {
+            let requestedTrack = spotify.track;
+            let requestedArtist = spotify.artist;
+
             lyricsRenderer.lyrics = null;
-            lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album).then(lyrics => {
-                lyricsRenderer.lyrics = lyrics;
-            });
+
+            lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album)
+            .then(lyrics => {
+                if (widget && requestedTrack === spotify.track && requestedArtist === spotify.artist) {
+                    lyricsRenderer.lyrics = lyrics;
+                }
+            })
         }
     }
 }
