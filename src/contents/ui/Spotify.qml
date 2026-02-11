@@ -6,12 +6,27 @@ QtObject {
 
     property var mpris2Model: Mpris.Mpris2Model
     {
-        onRowsInserted: (_, rowIndex) => {
-            const CONTAINER_ROLE = Qt.UserRole + 1
-            const player = this.data(this.index(rowIndex, 0), CONTAINER_ROLE)
+        readonly property int containerRole: Qt.UserRole + 1
 
-            if (player.identity === "Spotify") {
+        function isSpotifyPlayer(rowIndex) {
+            const player = this.data(this.index(rowIndex, 0), containerRole)
+            return !!(player && player.identity === "Spotify");
+        }
+
+        onRowsInserted: (_, rowIndex) => {
+            // Check if the inserted row is a Spotify player
+            if (isSpotifyPlayer(rowIndex)) {
                 this.currentIndex = rowIndex;
+            }
+        }
+
+        Component.onCompleted: {
+            // Check for existing Spotify player on initialization
+            for (let i = 0; i < this.rowCount(); i++) {
+                if (isSpotifyPlayer(i)) {
+                    this.currentIndex = i;
+                    break;
+                }
             }
         }
     }
