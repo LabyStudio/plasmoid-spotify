@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
+import Qt5Compat.GraphicalEffects
 
 Text {
     id: textElement

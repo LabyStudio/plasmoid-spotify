@@ -3,6 +3,11 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
     <group name="General">
+        <entry name="transparentBackground" type="Bool">
+            <label>Transparent background</label>
+            <description>Use transparent background when plasmoid is on desktop (not in panel)</description>
+            <default>false</default>
+        </entry>
         <entry name="showLyrics" type="Bool">
             <label>Show lyrics</label>
             <default>true</default>

@@ -21,6 +21,8 @@ KCM.SimpleKCM {
     property int cfg_artistFontSizeDefault
     property string cfg_artistFontFamilyDefault
 
+    property alias cfg_transparentBackground: transparentBackground.checked
+
     property alias cfg_showLyrics: showLyrics.checked
     property alias cfg_highlightCurrentLine: highlightCurrentLine.checked
     property alias cfg_lyricsFontSize: lyricsFontSize.value
@@ -39,6 +41,28 @@ KCM.SimpleKCM {
 
     ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
+
+        Kirigami.Heading {
+            text: "Appearance"
+            level: 3
+            Layout.alignment: Qt.AlignLeft
+            Layout.topMargin: Kirigami.Units.largeSpacing
+        }
+
+        CheckBox {
+            id: transparentBackground
+            text: "Transparent background"
+            ToolTip.text: "Use transparent background when plasmoid is on desktop (not in panel)"
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+        }
+
+        // Spacer
+        Rectangle {
+            Layout.fillWidth: true
+            height: 20
+            color: "transparent"
+        }
 
         Kirigami.Heading {
             text: "Lyrics"

@@ -9,11 +9,15 @@ PlasmoidItem {
     id: widget
 
     Plasmoid.status: PlasmaCore.Types.HiddenStatus
+    Plasmoid.backgroundHints: plasmoid.configuration.transparentBackground
+        ? PlasmaCore.Types.NoBackground
+        : PlasmaCore.Types.DefaultBackground
 
     Layout.preferredWidth: row.implicitWidth
     Layout.preferredHeight: row.implicitHeight
 
     readonly property int volumeStep: 2
+
 
     /* Lyrics LRC library */
     LyricsLrcLib {
@@ -263,7 +267,7 @@ PlasmoidItem {
             lyricsRenderer.lyrics = null;
 
             lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album)
-            .then(lyrics => {
+                .then(lyrics => {
                 if (widget && requestedTrack === spotify.track && requestedArtist === spotify.artist) {
                     lyricsRenderer.lyrics = lyrics;
                 }
