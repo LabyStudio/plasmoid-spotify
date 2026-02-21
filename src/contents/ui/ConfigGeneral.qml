@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 
@@ -29,15 +30,25 @@ KCM.SimpleKCM {
     property alias cfg_alternativeLineHeightCalculation: alternativeLineHeightCalculation.checked
     property alias cfg_lyricsFontFamily: lyricsFontFamily.currentText
 
+    property bool cfg_useCustomLyricsColorDefault
+    property alias cfg_useCustomLyricsColor: useCustomLyricsColor.checked
+    property string cfg_lyricsTextColor: plasmoid.configuration.lyricsTextColor
+
     property alias cfg_showAlbumCover: showAlbumCover.checked
     property alias cfg_fetchAlbumCoverHttps: fetchAlbumCoverHttps.checked
     property alias cfg_maxTitleArtistLength: maxTitleArtistLength.value
     property alias cfg_showTitle: showTitle.checked
     property alias cfg_titleFontSize: titleFontSize.value
     property alias cfg_titleFontFamily: titleFontFamily.currentText
+    property bool cfg_useCustomTitleColorDefault
+    property alias cfg_useCustomTitleColor: useCustomTitleColor.checked
+    property string cfg_titleTextColor: plasmoid.configuration.titleTextColor
     property alias cfg_showArtist: showArtist.checked
     property alias cfg_artistFontSize: artistFontSize.value
     property alias cfg_artistFontFamily: artistFontFamily.currentText
+    property bool cfg_useCustomArtistColorDefault
+    property alias cfg_useCustomArtistColor: useCustomArtistColor.checked
+    property string cfg_artistTextColor: plasmoid.configuration.artistTextColor
 
     ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
@@ -123,6 +134,56 @@ KCM.SimpleKCM {
                 to: 72
                 stepSize: 1
                 Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        CheckBox {
+            id: useCustomLyricsColor
+            text: "Use custom lyrics text color"
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 20
+            enabled: showLyrics.checked
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+            Layout.leftMargin: 40
+            enabled: showLyrics.checked && useCustomLyricsColor.checked
+
+            Label {
+                text: "Lyrics Color:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            Rectangle {
+                width: 40
+                height: 24
+                radius: 4
+                color: cfg_lyricsTextColor
+                border.color: Kirigami.Theme.textColor
+                border.width: 1
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: lyricsColorDialog.open()
+                }
+            }
+
+            Label {
+                text: cfg_lyricsTextColor
+                Layout.alignment: Qt.AlignLeft
+                opacity: 0.7
+            }
+        }
+
+        ColorDialog {
+            id: lyricsColorDialog
+            title: "Choose lyrics text color"
+            selectedColor: cfg_lyricsTextColor
+            onAccepted: {
+                cfg_lyricsTextColor = selectedColor.toString()
             }
         }
 
@@ -223,6 +284,56 @@ KCM.SimpleKCM {
         }
 
         CheckBox {
+            id: useCustomTitleColor
+            text: "Use custom title text color"
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 20
+            enabled: showTitle.checked
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+            Layout.leftMargin: 40
+            enabled: showTitle.checked && useCustomTitleColor.checked
+
+            Label {
+                text: "Title Color:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            Rectangle {
+                width: 40
+                height: 24
+                radius: 4
+                color: cfg_titleTextColor
+                border.color: Kirigami.Theme.textColor
+                border.width: 1
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: titleColorDialog.open()
+                }
+            }
+
+            Label {
+                text: cfg_titleTextColor
+                Layout.alignment: Qt.AlignLeft
+                opacity: 0.7
+            }
+        }
+
+        ColorDialog {
+            id: titleColorDialog
+            title: "Choose title text color"
+            selectedColor: cfg_titleTextColor
+            onAccepted: {
+                cfg_titleTextColor = selectedColor.toString()
+            }
+        }
+
+        CheckBox {
             id: showArtist
             text: "Show artist"
             Layout.alignment: Qt.AlignLeft
@@ -259,6 +370,56 @@ KCM.SimpleKCM {
                 to: 72
                 stepSize: 1
                 Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        CheckBox {
+            id: useCustomArtistColor
+            text: "Use custom artist text color"
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 20
+            enabled: showArtist.checked
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: Kirigami.Units.smallSpacing
+            Layout.leftMargin: 40
+            enabled: showArtist.checked && useCustomArtistColor.checked
+
+            Label {
+                text: "Artist Color:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            Rectangle {
+                width: 40
+                height: 24
+                radius: 4
+                color: cfg_artistTextColor
+                border.color: Kirigami.Theme.textColor
+                border.width: 1
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: artistColorDialog.open()
+                }
+            }
+
+            Label {
+                text: cfg_artistTextColor
+                Layout.alignment: Qt.AlignLeft
+                opacity: 0.7
+            }
+        }
+
+        ColorDialog {
+            id: artistColorDialog
+            title: "Choose artist text color"
+            selectedColor: cfg_artistTextColor
+            onAccepted: {
+                cfg_artistTextColor = selectedColor.toString()
             }
         }
     }

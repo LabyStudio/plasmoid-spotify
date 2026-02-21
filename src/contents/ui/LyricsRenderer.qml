@@ -16,7 +16,7 @@ Text {
     textFormat: Text.RichText
 
     text: "Lyrics"
-    color: Kirigami.Theme.textColor
+    color: plasmoid.configuration.useCustomLyricsColor ? plasmoid.configuration.lyricsTextColor : Kirigami.Theme.textColor
     font.pixelSize: plasmoid.configuration.lyricsFontSize
     font.family: plasmoid.configuration.lyricsFontFamily
     lineHeightMode: Text.FixedHeight
@@ -29,6 +29,28 @@ Text {
     property var renderedLineIndex: -1
     property var renderedHighlighted: false
     property bool centeredLyrics: false
+
+    function darkenColor(hexColor, factor) {
+        // factor 0.0 = black, 1.0 = original color
+        let hex = hexColor.replace("#", "");
+        if (hex.length === 3) {
+            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        }
+        let r = Math.round(parseInt(hex.substring(0, 2), 16) * factor);
+        let g = Math.round(parseInt(hex.substring(2, 4), 16) * factor);
+        let b = Math.round(parseInt(hex.substring(4, 6), 16) * factor);
+        r = Math.min(255, Math.max(0, r));
+        g = Math.min(255, Math.max(0, g));
+        b = Math.min(255, Math.max(0, b));
+        return "#" + r.toString(16).padStart(2, "0") + g.toString(16).padStart(2, "0") + b.toString(16).padStart(2, "0");
+    }
+
+    Connections {
+        target: plasmoid.configuration
+        function onUseCustomLyricsColorChanged() { updateText() }
+        function onLyricsTextColorChanged() { updateText() }
+        function onHighlightCurrentLineChanged() { updateText() }
+    }
 
     onLyricsChanged: {
         if (!plasmoid.configuration.highlightCurrentLine) {
@@ -57,13 +79,17 @@ Text {
         let lines = 0;
         let currentLineIndex = getCurrentLineIndex();
         let highlight = plasmoid.configuration.highlightCurrentLine;
+        let useCustomColor = plasmoid.configuration.useCustomLyricsColor;
+        let unhighlightedColor = useCustomColor
+            ? darkenColor(plasmoid.configuration.lyricsTextColor, 0.45)
+            : "gray";
 
         if (lyrics !== null && lyrics) {
             lyrics.forEach((line, i) => {
                 if (i === currentLineIndex || !highlight) {
                     builder += line.text;
                 } else {
-                    builder += `<span style="color:gray">${line.text}</span>`;
+                    builder += `<span style="color:${unhighlightedColor}">${line.text}</span>`;
                 }
 
                 if (i < lyrics.length - 1) {

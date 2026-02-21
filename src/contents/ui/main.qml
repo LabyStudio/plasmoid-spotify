@@ -205,7 +205,7 @@ PlasmoidItem {
                     Layout.fillWidth: true
                     Layout.rightMargin: 20
 
-                    color: Kirigami.Theme.textColor
+                    color: plasmoid.configuration.useCustomTitleColor ? plasmoid.configuration.titleTextColor : Kirigami.Theme.textColor
                     font.pixelSize: plasmoid.configuration.titleFontSize
                     font.family: plasmoid.configuration.titleFontFamily
                     font.weight: Font.Bold
@@ -223,7 +223,7 @@ PlasmoidItem {
                     Layout.fillWidth: true
                     Layout.rightMargin: 20
 
-                    color: Kirigami.Theme.textColor
+                    color: plasmoid.configuration.useCustomArtistColor ? plasmoid.configuration.artistTextColor : Kirigami.Theme.textColor
                     font.pixelSize: plasmoid.configuration.artistFontSize
                     font.family: plasmoid.configuration.artistFontFamily
                     text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"

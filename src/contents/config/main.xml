@@ -30,6 +30,14 @@
             <label>Lyrics Font Family</label>
             <default>Noto Sans</default>
         </entry>
+        <entry name="useCustomLyricsColor" type="Bool">
+            <label>Use custom lyrics text color</label>
+            <default>false</default>
+        </entry>
+        <entry name="lyricsTextColor" type="String">
+            <label>Lyrics Text Color</label>
+            <default>#ffffff</default>
+        </entry>
         <entry name="showAlbumCover" type="Bool">
             <label>Show album cover</label>
             <default>true</default>
@@ -62,6 +70,14 @@
             <label>Title Font Family</label>
             <default>Noto Sans</default>
         </entry>
+        <entry name="useCustomTitleColor" type="Bool">
+            <label>Use custom title text color</label>
+            <default>false</default>
+        </entry>
+        <entry name="titleTextColor" type="String">
+            <label>Title Text Color</label>
+            <default>#ffffff</default>
+        </entry>
         <entry name="showArtist" type="Bool">
             <label>Show artist</label>
             <default>true</default>
@@ -75,6 +91,14 @@
         <entry name="artistFontFamily" type="String">
             <label>Artist Font Family</label>
             <default>Noto Sans</default>
+        </entry>
+        <entry name="useCustomArtistColor" type="Bool">
+            <label>Use custom artist text color</label>
+            <default>false</default>
+        </entry>
+        <entry name="artistTextColor" type="String">
+            <label>Artist Text Color</label>
+            <default>#ffffff</default>
         </entry>
     </group>
 </kcfg>
