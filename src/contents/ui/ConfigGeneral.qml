@@ -12,6 +12,7 @@ KCM.SimpleKCM {
     property int cfg_lyricsFontSizeDefault
     property bool cfg_alternativeLineHeightCalculationDefault
     property string cfg_lyricsFontFamilyDefault
+    property string cfg_lyricsTextColorDefault
 
     property bool cfg_showAlbumCoverDefault
     property bool cfg_fetchAlbumCoverHttpsDefault
@@ -19,9 +20,13 @@ KCM.SimpleKCM {
     property bool cfg_showTitleDefault
     property int cfg_titleFontSizeDefault
     property string cfg_titleFontFamilyDefault
+    property string cfg_titleTextColorDefault
     property bool cfg_showArtistDefault
     property int cfg_artistFontSizeDefault
     property string cfg_artistFontFamilyDefault
+    property string cfg_artistTextColorDefault
+
+    property bool cfg_transparentBackgroundDefault
 
     property alias cfg_transparentBackground: transparentBackground.checked
 
