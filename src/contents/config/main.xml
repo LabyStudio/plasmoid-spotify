@@ -16,6 +16,12 @@
             <label>Highlight current line</label>
             <default>true</default>
         </entry>
+        <entry name="currentLineOffset" type="Int">
+            <label>Change position of current line (+1 more towards top)</label>
+            <default>0</default>
+            <min>-5</min>
+            <max>5</max>
+        </entry>
         <entry name="alternativeLineHeightCalculation" type="Bool">
             <label>Use alternative line height calculation</label>
             <default>false</default>
