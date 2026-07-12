@@ -105,7 +105,7 @@ KCM.SimpleKCM {
 
         RowLayout {
             Layout.alignment: Qt.AlignLeft
-            Layout.leftMargin: Kirigami.Units.largeSpacing
+            Layout.leftMargin: 20
             spacing: Kirigami.Units.smallSpacing
 
             Label {
