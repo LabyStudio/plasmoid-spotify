@@ -33,20 +33,31 @@ PlasmoidItem {
     Connections {
         target: spotify
 
-        onReadyChanged: {
+        function onReadyChanged() {
             Plasmoid.status = spotify.ready ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
         }
 
-        onPositionChanged: {
+        function onPositionChanged() {
             if (spotify.ready) {
                 updateProgressIndicator()
             }
         }
 
-        onArtworkUrlChanged: updateArtwork()
-        onTrackChanged: Qt.callLater(updateLyrics)
-        onArtistChanged: Qt.callLater(updateLyrics)
-        onAlbumChanged: Qt.callLater(updateLyrics)
+        function onArtworkUrlChanged() {
+            updateArtwork()
+        }
+
+        function onTrackChanged() {
+            Qt.callLater(updateLyrics)
+        }
+
+        function onArtistChanged() {
+            Qt.callLater(updateLyrics)
+        }
+
+        function onAlbumChanged() {
+            Qt.callLater(updateLyrics)
+        }
     }
 
     /* Progress bar updater */
