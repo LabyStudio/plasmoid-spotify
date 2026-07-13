@@ -244,7 +244,7 @@ PlasmoidItem {
                         : "No song playing"
 
                     Layout.preferredHeight: artist.font.pixelSize + 4
-                    visible: plasmoid.configuration.showArtist
+                    visible: plasmoid.configuration.showArtist && (!spotify.ready || !!spotify.artist)
                 }
             }
         }

@@ -113,10 +113,34 @@ QtObject {
         }
 
         if (Array.isArray(value)) {
-            value = value.join(", ")
+            const items = []
+            for (let i = 0; i < value.length; i++) {
+                const item = normalizedScalarMetadata(value[i])
+                if (item) {
+                    items.push(item)
+                }
+            }
+
+            return items.length > 0 ? items.join(", ") : null
         }
 
-        const text = String(value).replace(/\s+/g, " ").trim()
+        return normalizedScalarMetadata(value)
+    }
+
+    function normalizedScalarMetadata(value) {
+        if (value === undefined || value === null) {
+            return null
+        }
+
+        const text = String(value)
+            .replace(/[\u0000-\u001f\u007f-\u009f\u00ad\u034f\u061c\u115f\u1160\u17b4\u17b5\u180e\u2000-\u200f\u2028-\u202f\u205f-\u206f\u2800\u3000\ufeff]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+
+        if (/^[,;|/\\\-_.:()\[\]{}"'`]*$/.test(text)) {
+            return null
+        }
+
         return text.length > 0 ? text : null
     }
 
