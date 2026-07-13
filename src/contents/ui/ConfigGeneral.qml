@@ -6,6 +6,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 
 KCM.SimpleKCM {
+    property string cfg_playerIdentityDefault
     property bool cfg_showLyricsDefault
     property bool cfg_highlightCurrentLineDefault
     property int cfg_currentLineOffsetDefault
@@ -28,6 +29,7 @@ KCM.SimpleKCM {
 
     property bool cfg_transparentBackgroundDefault
 
+    property alias cfg_playerIdentity: playerIdentity.text
     property alias cfg_transparentBackground: transparentBackground.checked
 
     property alias cfg_showLyrics: showLyrics.checked
@@ -447,6 +449,38 @@ KCM.SimpleKCM {
             selectedColor: cfg_artistTextColor
             onAccepted: {
                 cfg_artistTextColor = selectedColor.toString()
+            }
+        }
+
+        // Spacer
+        Rectangle {
+            Layout.fillWidth: true
+            height: 20
+            color: "transparent"
+        }
+
+        Kirigami.Heading {
+            text: "Advanced"
+            level: 3
+            Layout.alignment: Qt.AlignLeft
+            Layout.topMargin: Kirigami.Units.largeSpacing
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Player identity:"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            TextField {
+                id: playerIdentity
+                placeholderText: cfg_playerIdentityDefault || "Spotify"
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 14
             }
         }
     }

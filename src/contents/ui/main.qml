@@ -220,7 +220,9 @@ PlasmoidItem {
                     font.pixelSize: plasmoid.configuration.titleFontSize
                     font.family: plasmoid.configuration.titleFontFamily
                     font.weight: Font.Bold
-                    text: spotify && spotify.ready ? truncateText(spotify.track, plasmoid.configuration.maxTitleArtistLength) : "Spotify"
+                    text: spotify && spotify.ready
+                        ? truncateText(spotify.track || spotify.identity || "No song playing", plasmoid.configuration.maxTitleArtistLength)
+                        : "Spotify"
 
                     Layout.preferredHeight: title.font.pixelSize + 4
                     visible: plasmoid.configuration.showTitle
@@ -237,7 +239,9 @@ PlasmoidItem {
                     color: plasmoid.configuration.useCustomArtistColor ? plasmoid.configuration.artistTextColor : Kirigami.Theme.textColor
                     font.pixelSize: plasmoid.configuration.artistFontSize
                     font.family: plasmoid.configuration.artistFontFamily
-                    text: spotify && spotify.ready ? truncateText(spotify.artist, plasmoid.configuration.maxTitleArtistLength) : "No song playing"
+                    text: spotify && spotify.ready
+                        ? truncateText(spotify.artist || "", plasmoid.configuration.maxTitleArtistLength)
+                        : "No song playing"
 
                     Layout.preferredHeight: artist.font.pixelSize + 4
                     visible: plasmoid.configuration.showArtist
@@ -271,7 +275,7 @@ PlasmoidItem {
 
     /* Lyrics update handler */
     function updateLyrics() {
-        if (spotify && spotify.ready) {
+        if (spotify && spotify.ready && spotify.track && spotify.artist) {
             let requestedTrack = spotify.track;
             let requestedArtist = spotify.artist;
 
@@ -283,6 +287,8 @@ PlasmoidItem {
                     lyricsRenderer.lyrics = lyrics;
                 }
             })
+        } else {
+            lyricsRenderer.lyrics = null;
         }
     }
 }
