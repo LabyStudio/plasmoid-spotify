@@ -8,9 +8,11 @@ import org.kde.kcmutils as KCM
 KCM.SimpleKCM {
     property bool cfg_showLyricsDefault
     property bool cfg_highlightCurrentLineDefault
+    property int cfg_currentLineOffsetDefault
     property int cfg_lyricsFontSizeDefault
     property bool cfg_alternativeLineHeightCalculationDefault
     property string cfg_lyricsFontFamilyDefault
+    property string cfg_lyricsTextColorDefault
 
     property bool cfg_showAlbumCoverDefault
     property bool cfg_fetchAlbumCoverHttpsDefault
@@ -18,14 +20,19 @@ KCM.SimpleKCM {
     property bool cfg_showTitleDefault
     property int cfg_titleFontSizeDefault
     property string cfg_titleFontFamilyDefault
+    property string cfg_titleTextColorDefault
     property bool cfg_showArtistDefault
     property int cfg_artistFontSizeDefault
     property string cfg_artistFontFamilyDefault
+    property string cfg_artistTextColorDefault
+
+    property bool cfg_transparentBackgroundDefault
 
     property alias cfg_transparentBackground: transparentBackground.checked
 
     property alias cfg_showLyrics: showLyrics.checked
     property alias cfg_highlightCurrentLine: highlightCurrentLine.checked
+    property alias cfg_currentLineOffset: currentLineOffset.value
     property alias cfg_lyricsFontSize: lyricsFontSize.value
     property alias cfg_alternativeLineHeightCalculation: alternativeLineHeightCalculation.checked
     property alias cfg_lyricsFontFamily: lyricsFontFamily.currentText
@@ -94,6 +101,26 @@ KCM.SimpleKCM {
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: 20
             enabled: showLyrics.checked
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 20
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                text: "Current line offset (+1 more toward top):"
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            SpinBox {
+                id: currentLineOffset
+                from: -5
+                to: 5
+                stepSize: 1
+                Layout.alignment: Qt.AlignLeft
+                enabled: showLyrics.checked
+            }
         }
 
         CheckBox {

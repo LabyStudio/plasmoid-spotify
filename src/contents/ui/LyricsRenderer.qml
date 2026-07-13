@@ -177,7 +177,7 @@ Text {
         let visibleLines = Math.floor(textElement.height / lineHeight);
         let targetLineInView = Math.floor(visibleLines / 2);
 
-        let targetLineIndex = currentLineIndex - targetLineInView;
+        let targetLineIndex = currentLineIndex - targetLineInView + plasmoid.configuration.currentLineOffset;
         return -targetLineIndex * lineHeight;
     }
 
