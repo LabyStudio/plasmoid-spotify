@@ -20,25 +20,31 @@ QtObject {
     {
         readonly property int containerRole: Qt.UserRole + 1
 
-        function isConfiguredPlayer(rowIndex) {
-            const player = this.data(this.index(rowIndex, 0), containerRole)
-            return !!(player && (root.acceptAnyPlayer || player.identity === root.playerIdentity));
-        }
-
         function selectConfiguredPlayer() {
+            let fallbackIndex = -1
+
             for (let i = 0; i < this.rowCount(); i++) {
-                if (isConfiguredPlayer(i)) {
-                    this.currentIndex = i;
-                    break;
+                const player = this.data(this.index(i, 0), containerRole)
+
+                if (player && (root.acceptAnyPlayer || player.identity === root.playerIdentity)) {
+                    if (root.acceptAnyPlayer && player.identity && String(player.identity).toLowerCase() === "spotify") {
+                        this.currentIndex = i;
+                        return;
+                    }
+
+                    if (fallbackIndex < 0) {
+                        fallbackIndex = i;
+                    }
                 }
             }
+
+            if (fallbackIndex >= 0) {
+                this.currentIndex = fallbackIndex;
+            }
         }
 
-        onRowsInserted: (_, rowIndex) => {
-            // Check if the inserted row is the configured player
-            if (isConfiguredPlayer(rowIndex)) {
-                this.currentIndex = rowIndex;
-            }
+        onRowsInserted: {
+            selectConfiguredPlayer()
         }
 
         Component.onCompleted: {
