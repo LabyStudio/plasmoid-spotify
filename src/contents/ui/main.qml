@@ -18,10 +18,14 @@ PlasmoidItem {
 
     readonly property int volumeStep: 2
 
+    MediaCache {
+        id: mediaCache
+    }
 
     /* Lyrics LRC library */
     LyricsLrcLib {
         id: lyricsLrcLib
+        cache: mediaCache
     }
 
     /* Spotify player */
@@ -57,6 +61,14 @@ PlasmoidItem {
 
         function onAlbumChanged() {
             Qt.callLater(updateLyrics)
+        }
+    }
+
+    Connections {
+        target: plasmoid.configuration
+
+        function onFetchAlbumCoverHttpsChanged() {
+            updateArtwork()
         }
     }
 
@@ -127,10 +139,11 @@ PlasmoidItem {
             Layout.rightMargin: 5
             Layout.fillWidth: false
             fillMode: Image.PreserveAspectFit
+            cache: false
 
 
             property string fallbackSource: "../assets/icon.svg"
-            property string lastAttemptedSource: ""
+            property string remoteSource: ""
 
             source: artwork.fallbackSource
             visible: plasmoid.configuration.showAlbumCover
@@ -139,10 +152,7 @@ PlasmoidItem {
                 id: fallbackTimer
                 interval: 5000
                 repeat: false
-                onTriggered: {
-                    console.warn("Failed to load artwork from", artwork.lastAttemptedSource)
-                    artwork.source = artwork.fallbackSource
-                }
+                onTriggered: artwork.fail()
             }
 
             onSourceChanged: {
@@ -150,7 +160,6 @@ PlasmoidItem {
                     fallbackTimer.stop()
                 } else {
                     fallbackTimer.restart()
-                    lastAttemptedSource = source
                 }
             }
 
@@ -159,7 +168,19 @@ PlasmoidItem {
                     case Image.Ready:
                         fallbackTimer.stop()
                         break
+                    case Image.Error:
+                        fail()
+                        break
                 }
+            }
+
+            function fail() {
+                fallbackTimer.stop()
+                console.warn("Failed to load artwork from", remoteSource || source)
+                if (remoteSource) {
+                    mediaCache.remove("artwork", remoteSource)
+                }
+                source = fallbackSource
             }
 
             /* Border radius */
@@ -264,12 +285,27 @@ PlasmoidItem {
 
     /* Artwork update handler */
     function updateArtwork() {
-        if (spotify.ready) {
-            let url = spotify.artworkUrl;
-            if (url && url.startsWith("https://") && !plasmoid.configuration.fetchAlbumCoverHttps) {
-                url = url.replace("https://", "http://");
-            }
-            artwork.source = url || artwork.fallbackSource;
+        let url = spotify.ready ? spotify.artworkUrl : null
+        if (url && url.startsWith("https://") && !plasmoid.configuration.fetchAlbumCoverHttps) {
+            url = url.replace("https://", "http://")
+        }
+        artwork.remoteSource = url && /^https?:\/\//.test(url) ? url : ""
+        if (!url) {
+            artwork.source = artwork.fallbackSource
+        } else if (!artwork.remoteSource) {
+            artwork.source = url
+        } else {
+            artwork.source = artwork.fallbackSource
+            mediaCache.fetchArtwork(url).then(source => {
+                if (url === artwork.remoteSource) {
+                    artwork.source = source
+                }
+            }).catch(error => {
+                if (url === artwork.remoteSource) {
+                    console.warn("Could not cache artwork from", url, error)
+                    artwork.source = url
+                }
+            })
         }
     }
 
@@ -278,14 +314,17 @@ PlasmoidItem {
         if (spotify && spotify.ready && spotify.track && spotify.artist) {
             let requestedTrack = spotify.track;
             let requestedArtist = spotify.artist;
+            let requestedAlbum = spotify.album;
 
             lyricsRenderer.lyrics = null;
 
             lyricsLrcLib.fetchLyrics(spotify.track, spotify.artist, spotify.album)
                 .then(lyrics => {
-                if (widget && requestedTrack === spotify.track && requestedArtist === spotify.artist) {
+                if (widget && requestedTrack === spotify.track && requestedArtist === spotify.artist && requestedAlbum === spotify.album) {
                     lyricsRenderer.lyrics = lyrics;
                 }
+            }).catch(error => {
+                console.warn("Could not fetch lyrics:", error)
             })
         } else {
             lyricsRenderer.lyrics = null;

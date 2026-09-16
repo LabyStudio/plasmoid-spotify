@@ -6,6 +6,8 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
 
 Item {
+    required property var cache
+
     Utils {
         id: utils
     }
@@ -14,6 +16,16 @@ Item {
     readonly property string url_search: endpoint + "/api/search"
 
     function fetchLyrics(trackName, artistName, albumName) {
+        const key = JSON.stringify([trackName, artistName, albumName])
+        const cached = cache.get("lyrics", key)
+        if (cached !== null) {
+            try {
+                return Promise.resolve(JSON.parse(cached))
+            } catch (error) {
+                cache.remove("lyrics", key)
+            }
+        }
+
         return search(trackName, artistName, albumName)
             .then(data => {
             if (data.length <= 0) {
@@ -36,7 +48,10 @@ Item {
             }
 
             return utils.parseLyrics(text);
-        });
+        }).then(lyrics => {
+            cache.put("lyrics", key, JSON.stringify(lyrics))
+            return lyrics
+        })
     }
 
     function search(trackName, artistName, albumName) {
@@ -62,9 +77,6 @@ Item {
                     return [];
                 });
             });
-        }).catch(error => {
-            console.error("Search failed:", error);
-            return [];
         });
     }
 

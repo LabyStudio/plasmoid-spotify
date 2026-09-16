@@ -14,6 +14,7 @@ This plasmoid is designed to be lightweight and efficient without impacting syst
   by [lrclib.net](https://lrclib.net).
 - **Playback Controls**: Middle-click to play or pause the song.
 - **Volume Control**: Adjust volume using the scroll wheel.
+- **Media Cache**: Saves the 50 most recently used lyrics and remote album covers up to 2 MB to avoid repeated downloads.
 
 ## Installation
 ### KDE Store Installation
