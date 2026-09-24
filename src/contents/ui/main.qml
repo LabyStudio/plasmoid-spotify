@@ -113,6 +113,7 @@ PlasmoidItem {
             spotify: spotify
             visible: plasmoid.configuration.showLyrics && spotify && spotify.ready && lyrics && lyrics.length > 0
             Layout.fillWidth: true
+            leftAlign: plasmoid.configuration.alignLyricsLeft
             centeredLyrics: !plasmoid.configuration.showAlbumCover
                 && !plasmoid.configuration.showTitle
                 && !plasmoid.configuration.showArtist

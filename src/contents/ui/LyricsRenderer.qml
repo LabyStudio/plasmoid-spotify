@@ -8,11 +8,11 @@ Text {
     id: textElement
     Layout.fillWidth: true
     Layout.preferredHeight: parent.height
-    Layout.rightMargin: 15
-    Layout.leftMargin: 15
+    Layout.rightMargin: leftAlign ? 0 : 15
+    Layout.leftMargin: leftAlign ? 0 : 15
     wrapMode: Text.NoWrap
-    horizontalAlignment: centeredLyrics ? Text.AlignHCenter : Text.AlignRight
-    Layout.alignment: centeredLyrics ? Qt.AlignHCenter | Qt.AlignVCenter : Qt.AlignLeft
+    horizontalAlignment: leftAlign ? Text.AlignLeft : (centeredLyrics ? Text.AlignHCenter : Text.AlignRight)
+    Layout.alignment: leftAlign ? (Qt.AlignLeft | Qt.AlignVCenter) : (centeredLyrics ? (Qt.AlignHCenter | Qt.AlignVCenter) : Qt.AlignLeft)
     textFormat: Text.RichText
 
     text: "Lyrics"
@@ -29,6 +29,7 @@ Text {
     property var renderedLineIndex: -1
     property var renderedHighlighted: false
     property bool centeredLyrics: false
+    property bool leftAlign: false
 
     function darkenColor(hexColor, factor) {
         // factor 0.0 = black, 1.0 = original color

@@ -31,6 +31,10 @@
             <label>Use alternative line height calculation</label>
             <default>false</default>
         </entry>
+        <entry name="alignLyricsLeft" type="Bool">
+            <label>Align lyrics to the left</label>
+            <default>false</default>
+        </entry>
         <entry name="lyricsFontSize" type="Int">
             <label>Lyrics Font Size</label>
             <default>12</default>
