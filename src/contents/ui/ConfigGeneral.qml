@@ -12,7 +12,6 @@ KCM.SimpleKCM {
     property int cfg_currentLineOffsetDefault
     property int cfg_lyricsFontSizeDefault
     property bool cfg_alternativeLineHeightCalculationDefault
-    property bool cfg_alignLyricsLeftDefault
     property string cfg_lyricsFontFamilyDefault
     property string cfg_lyricsTextColorDefault
 
@@ -38,12 +37,11 @@ KCM.SimpleKCM {
     property alias cfg_currentLineOffset: currentLineOffset.value
     property alias cfg_lyricsFontSize: lyricsFontSize.value
     property alias cfg_alternativeLineHeightCalculation: alternativeLineHeightCalculation.checked
-    property alias cfg_alignLyricsLeft: alignLyricsLeft.checked
     property string cfg_lyricsFontFamily
 
     property bool cfg_useCustomLyricsColorDefault
     property alias cfg_useCustomLyricsColor: useCustomLyricsColor.checked
-    property string cfg_lyricsTextColor
+    property string cfg_lyricsTextColor: plasmoid.configuration.lyricsTextColor
 
     property alias cfg_showAlbumCover: showAlbumCover.checked
     property alias cfg_fetchAlbumCoverHttps: fetchAlbumCoverHttps.checked
@@ -53,13 +51,13 @@ KCM.SimpleKCM {
     property string cfg_titleFontFamily
     property bool cfg_useCustomTitleColorDefault
     property alias cfg_useCustomTitleColor: useCustomTitleColor.checked
-    property string cfg_titleTextColor
+    property string cfg_titleTextColor: plasmoid.configuration.titleTextColor
     property alias cfg_showArtist: showArtist.checked
     property alias cfg_artistFontSize: artistFontSize.value
     property string cfg_artistFontFamily
     property bool cfg_useCustomArtistColorDefault
     property alias cfg_useCustomArtistColor: useCustomArtistColor.checked
-    property string cfg_artistTextColor
+    property string cfg_artistTextColor: plasmoid.configuration.artistTextColor
 
     ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
@@ -134,15 +132,6 @@ KCM.SimpleKCM {
             Layout.alignment: Qt.AlignLeft
             enabled: showLyrics.checked
             Layout.leftMargin: 20
-        }
-
-        CheckBox {
-            id: alignLyricsLeft
-            text: "Align lyrics to the left (no padding)"
-            ToolTip.text: "Show lyrics aligned to the far left without side padding. Combine with hidden album cover, title and artist for a lyrics-only view."
-            Layout.alignment: Qt.AlignLeft
-            Layout.leftMargin: 20
-            enabled: showLyrics.checked
         }
 
         RowLayout {
@@ -293,6 +282,8 @@ KCM.SimpleKCM {
             text: "Show title"
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: Kirigami.Units.largeSpacing
+            checked: plasmoid.configuration.showTitle
+            onCheckedChanged: plasmoid.configuration.showTitle = checked
         }
 
         RowLayout {
@@ -386,6 +377,8 @@ KCM.SimpleKCM {
             text: "Show artist"
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: Kirigami.Units.largeSpacing
+            checked: plasmoid.configuration.showArtist
+            onCheckedChanged: plasmoid.configuration.showArtist = checked
         }
 
         RowLayout {
