@@ -37,7 +37,7 @@ KCM.SimpleKCM {
     property alias cfg_currentLineOffset: currentLineOffset.value
     property alias cfg_lyricsFontSize: lyricsFontSize.value
     property alias cfg_alternativeLineHeightCalculation: alternativeLineHeightCalculation.checked
-    property alias cfg_lyricsFontFamily: lyricsFontFamily.currentText
+    property string cfg_lyricsFontFamily
 
     property bool cfg_useCustomLyricsColorDefault
     property alias cfg_useCustomLyricsColor: useCustomLyricsColor.checked
@@ -48,13 +48,13 @@ KCM.SimpleKCM {
     property alias cfg_maxTitleArtistLength: maxTitleArtistLength.value
     property alias cfg_showTitle: showTitle.checked
     property alias cfg_titleFontSize: titleFontSize.value
-    property alias cfg_titleFontFamily: titleFontFamily.currentText
+    property string cfg_titleFontFamily
     property bool cfg_useCustomTitleColorDefault
     property alias cfg_useCustomTitleColor: useCustomTitleColor.checked
     property string cfg_titleTextColor: plasmoid.configuration.titleTextColor
     property alias cfg_showArtist: showArtist.checked
     property alias cfg_artistFontSize: artistFontSize.value
-    property alias cfg_artistFontFamily: artistFontFamily.currentText
+    property string cfg_artistFontFamily
     property bool cfg_useCustomArtistColorDefault
     property alias cfg_useCustomArtistColor: useCustomArtistColor.checked
     property string cfg_artistTextColor: plasmoid.configuration.artistTextColor
@@ -145,16 +145,12 @@ KCM.SimpleKCM {
                 Layout.alignment: Qt.AlignLeft
             }
 
-            ComboBox {
-                id: lyricsFontFamily
-                model: Qt.fontFamilies()
-                editable: true
+            Button {
+                id: lyricsFontFamilyButton
+                text: cfg_lyricsFontFamily.length > 0 ? cfg_lyricsFontFamily : "Choose…"
                 Layout.alignment: Qt.AlignLeft
-
-                Component.onCompleted: {
-                    const index = model.indexOf(plasmoid.configuration.lyricsFontFamily)
-                    currentIndex = index >= 0 ? index : 0
-                }
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+                onClicked: lyricsFontDialog.open()
             }
 
             SpinBox {
@@ -163,6 +159,15 @@ KCM.SimpleKCM {
                 to: 72
                 stepSize: 1
                 Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        FontDialog {
+            id: lyricsFontDialog
+            title: "Choose lyrics font"
+            currentFont: Qt.font({ family: cfg_lyricsFontFamily, pixelSize: cfg_lyricsFontSize })
+            onAccepted: {
+                cfg_lyricsFontFamily = currentFont.family
             }
         }
 
@@ -291,16 +296,12 @@ KCM.SimpleKCM {
                 Layout.alignment: Qt.AlignLeft
             }
 
-            ComboBox {
-                id: titleFontFamily
-                model: Qt.fontFamilies()
-                editable: true
+            Button {
+                id: titleFontFamilyButton
+                text: cfg_titleFontFamily.length > 0 ? cfg_titleFontFamily : "Choose…"
                 Layout.alignment: Qt.AlignLeft
-
-                Component.onCompleted: {
-                    const index = model.indexOf(plasmoid.configuration.titleFontFamily)
-                    currentIndex = index >= 0 ? index : 0
-                }
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+                onClicked: titleFontDialog.open()
             }
 
             SpinBox {
@@ -309,6 +310,15 @@ KCM.SimpleKCM {
                 to: 72
                 stepSize: 1
                 Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        FontDialog {
+            id: titleFontDialog
+            title: "Choose title font"
+            currentFont: Qt.font({ family: cfg_titleFontFamily, pixelSize: cfg_titleFontSize })
+            onAccepted: {
+                cfg_titleFontFamily = currentFont.family
             }
         }
 
@@ -381,16 +391,12 @@ KCM.SimpleKCM {
                 Layout.alignment: Qt.AlignLeft
             }
 
-            ComboBox {
-                id: artistFontFamily
-                model: Qt.fontFamilies()
-                editable: true
+            Button {
+                id: artistFontFamilyButton
+                text: cfg_artistFontFamily.length > 0 ? cfg_artistFontFamily : "Choose…"
                 Layout.alignment: Qt.AlignLeft
-
-                Component.onCompleted: {
-                    const index = model.indexOf(plasmoid.configuration.artistFontFamily)
-                    currentIndex = index >= 0 ? index : 0
-                }
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+                onClicked: artistFontDialog.open()
             }
 
             SpinBox {
@@ -399,6 +405,15 @@ KCM.SimpleKCM {
                 to: 72
                 stepSize: 1
                 Layout.alignment: Qt.AlignLeft
+            }
+        }
+
+        FontDialog {
+            id: artistFontDialog
+            title: "Choose artist font"
+            currentFont: Qt.font({ family: cfg_artistFontFamily, pixelSize: cfg_artistFontSize })
+            onAccepted: {
+                cfg_artistFontFamily = currentFont.family
             }
         }
 
